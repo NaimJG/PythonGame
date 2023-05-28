@@ -1,3 +1,5 @@
+FruitMaster,108
+FruitMaster,54
 Naim,29
 NaimJG,22
 NaimJG,22
