@@ -91,7 +91,6 @@ def get_player_name():
     input_text = input_font.render("Enter your name and press ENTER to continue:", True, WHITE)
     screen.blit(input_text, (SCREEN_WIDTH/2 - input_text.get_width()/2, SCREEN_HEIGHT/2))
     pygame.display.flip()
-
     input_string = ""
     while True:
         for event in pygame.event.get():
@@ -108,12 +107,57 @@ def get_player_name():
 
         screen.fill((0, 0, 0))  # Limpiar la pantalla antes de mostrar el texto actualizado
         start_screen.blit(start_bg_image, (0, 0))  # Volver a dibujar la imagen de fondo de inicio
-        
         input_display = input_font.render(input_string, True, WHITE)
         screen.blit(input_text, (SCREEN_WIDTH/2 - input_text.get_width()/2, SCREEN_HEIGHT/2 - 30))
         screen.blit(input_display, (SCREEN_WIDTH/2 - input_display.get_width()/2, SCREEN_HEIGHT/2))
-        
         pygame.display.flip()
+
+# Función para reiniciar el juego
+def reset_game():
+    global score, lives
+    score = 0
+    lives = 3
+    player.rect.centerx = SCREEN_WIDTH/2
+    player.rect.bottom = SCREEN_HEIGHT - 10
+
+# Función para mostrar la pantalla de Game Over
+def show_game_over_screen():
+    global player_name
+    screen.blit(background_image, (0, 0))
+    font = pygame.font.SysFont(None, 70)
+    text = font.render("Game Over", True, WHITE)
+    text_restart = font.render("Press R to restart", True, WHITE)
+    text_menu = font.render("Press M for main menu", True, WHITE)
+    screen.blit(text, (SCREEN_WIDTH/2 - text.get_width()/2, SCREEN_HEIGHT/12))
+    screen.blit(text_restart, (SCREEN_WIDTH/2 - text_restart.get_width()/2, SCREEN_HEIGHT/2 + 180))
+    screen.blit(text_menu, (SCREEN_WIDTH/2 - text_menu.get_width()/2, SCREEN_HEIGHT/2 + 240))
+    score_font = pygame.font.SysFont(None, 30)
+    score_text = score_font.render("High Scores:", True, WHITE)
+    screen.blit(score_text, (SCREEN_WIDTH/2 - score_text.get_width()/2, SCREEN_HEIGHT/5))
+    for i, score in enumerate(scoreboard):
+        score_text = score_font.render(
+            f"{i+1}. {score['nombre']}: {score['puntuacion']}",
+            True,
+            WHITE
+        )
+        screen.blit(score_text, (SCREEN_WIDTH/2 - score_text.get_width()/2, SCREEN_HEIGHT/5 + (i+1)*30))
+    pygame.display.flip()
+    waiting = True
+    while waiting:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    waiting = False
+                    reset_game()
+                elif event.key == pygame.K_m:
+                    waiting = False
+                    reset_game()
+                    show_start_screen()
+                    player_name = get_player_name()
+
 
 pygame.display.set_caption("Fruit Catcher")
 screen = pygame.display.set_mode((1000, 590))
@@ -200,36 +244,8 @@ while running:
 
     if lives == 0:
         update_high_scores(player_name, score)
-        font = pygame.font.SysFont(None, 70)
-        text = font.render("Game Over", True, WHITE)
-        text_restart = font.render("Press R to restart", True, WHITE)
-        screen.blit(text, (SCREEN_WIDTH/2 - text.get_width()/2, SCREEN_HEIGHT/12))
-        screen.blit(text_restart, (SCREEN_WIDTH/2 - text_restart.get_width()/2, SCREEN_HEIGHT/2 + 180))
-        score_font = pygame.font.SysFont(None, 30)
-        score_text = score_font.render("High Scores:", True, WHITE)
-        screen.blit(score_text, (SCREEN_WIDTH/2 - score_text.get_width()/2, SCREEN_HEIGHT/5))
-        for i, score in enumerate(scoreboard):
-            score_text = score_font.render(
-                f"{i+1}. {score['nombre']}: {score['puntuacion']}",
-                True,
-                WHITE
-            )
-            screen.blit(score_text, (SCREEN_WIDTH/2 - score_text.get_width()/2, SCREEN_HEIGHT/5 + (i+1)*30))
-        pygame.display.flip()
+        show_game_over_screen()
 
-        waiting = True
-        while waiting:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_r:
-                        waiting = False
-                        lives = 3
-                        score = 0
-                        player.rect.centerx = SCREEN_WIDTH/2
-                        player.rect.bottom = SCREEN_HEIGHT - 10
     else:       
         # Actualiza todos los sprites
         player_group.update()
