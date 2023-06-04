@@ -169,7 +169,7 @@ background_image = pygame.image.load("fantasywoods.jpg")
 pygame.mixer.music.load("musica2.mp3")
 pygame.mixer.music.play(-1)
 sound = pygame.mixer.Sound("pop.mp3")
-soundWrong = pygame.mixer.Sound("wrong.mp3")
+soundWrong = pygame.mixer.Sound("bee.mp3")
 
 # Crea un objeto jugador
 player = Player()
