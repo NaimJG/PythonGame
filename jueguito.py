@@ -92,14 +92,16 @@ def get_player_name():
     screen.blit(input_text, (SCREEN_WIDTH/2 - input_text.get_width()/2, SCREEN_HEIGHT/2))
     pygame.display.flip()
     input_string = ""
-    while True:
+    name_entered = False  # Variable para verificar si se ha ingresado un nombre válido
+    while not name_entered:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
-                    return input_string
+                    if input_string.strip() != "":
+                        name_entered = True
                 elif event.key == pygame.K_BACKSPACE:
                     input_string = input_string[:-1]
                 else:
@@ -111,6 +113,8 @@ def get_player_name():
         screen.blit(input_text, (SCREEN_WIDTH/2 - input_text.get_width()/2, SCREEN_HEIGHT/2 - 30))
         screen.blit(input_display, (SCREEN_WIDTH/2 - input_display.get_width()/2, SCREEN_HEIGHT/2))
         pygame.display.flip()
+        
+    return input_string.strip()
 
 # Función para reiniciar el juego
 def reset_game():

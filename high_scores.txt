@@ -5,6 +5,6 @@ FruitMaster,54
 JoseG,50
 Naimsito,43
 Bieeeeen,42
+Hola,41
 TheBigBoss,37
 Naim,29
-Naim1037,24
