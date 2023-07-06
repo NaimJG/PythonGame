@@ -1,3 +1,4 @@
+naimjose,227
 FruitMaster,108
 Alessita,66
 Aless,58
@@ -7,4 +8,3 @@ Naimsito,43
 Bieeeeen,42
 Hola,41
 TheBigBoss,37
-Naim,29
